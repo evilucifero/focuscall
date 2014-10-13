@@ -1,0 +1,51 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<title>取号 - 焦点摄影</title>
+<style>
+  body {
+    font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial, simsun, "宋体";
+  }
+</style>
+<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="text-center col-md-offset-3 col-md-6">
+  <br>
+  <h1>面试者请取号</h1>
+  <br>
+  <br>
+  <button id="print" type="button" class="btn btn-primary btn-lg btn-block btn-danger">确认无误，提交打印</button>
+</div>
+</div>
+<script type="text/javascript">
+  window.onbeforeunload=function(event){
+    return "离开后所有的数据将全部丢失！"
+  }
+  var nownum = 0;
+  $("#print").click(function(){
+    var numstr = "";
+    nownum++;
+    if(nownum < 10){
+      numstr += "0";
+    } 
+    if(nownum < 100){
+      numstr += "0";
+    }
+    numstr += nownum.toString(); 
+    var PrintWindow = window.open();
+    PrintWindow.document.write("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><style>body{font-family:\"Hiragino Sans GB\",\"Microsoft YaHei\",\"微软雅黑\",tahoma,arial,simsun,\"宋体\";text-align:center;}</style></head><body><br><h1 style=\"text-decoration:underline\">焦点摄影</h1>");
+    PrintWindow.document.write("<h5>欢迎参加面试，您的顺序号为</h5><p style=\"font-size:120px;display:inline\">");
+    PrintWindow.document.write(numstr);
+    PrintWindow.document.write("</p><h5>因为焦点是一个很有爱的地方<br>所以我们的面试更像是在聊天<br>一聊就不知道扯到哪里去了呢<br>所以排队时间就可能会有点长<br>当然也不用太焦虑更不用紧张<br>穿了西装革履的麻烦松下领带<br>带了电脑的可以打盘人机对战<br>拿相机的别翻相册了按快门吧<br>等待期间觉得无聊那就找点事<br>比如可以搭讪身边的帅哥美女<br>可以咨询焦点小伙伴摄影知识<br>如果你是社交恐惧或害怕问题<br>那就麻烦多读几遍温馨提示吧<br>然后你就会被叫去我们扯淡了<br><h5></body></html>");
+    PrintWindow.document.close();
+    PrintWindow.print();
+  });
+</script>
+</body>
+</html>

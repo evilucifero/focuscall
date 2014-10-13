@@ -1,0 +1,67 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<title>叫号 - 焦点摄影</title>
+<style>
+    body {
+        font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial, simsun, "宋体";
+    }
+</style>
+<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="text-center col-md-offset-3 col-md-6">
+	<br>
+	<h1>面试官请叫号</h1>
+	<br>
+	<br>
+	<h3 style="display:inline">当前号码为：</h3>
+	<p id="nowNumber" style="display:inline;font-size:120px">000</p>
+	<br>
+	<br>
+	<button id="nextcall"  type="button" class="btn btn-danger btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span>&ensp;下一位</button>
+</div>
+</div>
+<script type="text/javascript">
+  var nownum = 0;
+  function ChangeNum(num){
+    var numstr = "";
+    if(num < 10){
+      numstr += "0";
+    } 
+    if(num < 100){
+      numstr += "0";
+    }
+    numstr += num.toString();
+    document.getElementById("nowNumber").textContent = numstr;
+  }
+  function InitialData(){
+    $.ajax({
+      type:"GET",
+      dataType:"json",
+      url:"/api/nowcall",
+      success:function(msg){
+        nownum = msg.call_num;
+        ChangeNum(nownum);
+      }
+    });
+  }
+  InitialData();
+  $("#nextcall").click(function(){
+    $.ajax({
+      type:"GET",
+      dataType:"json",
+      url:"/api/nextcall",
+      success:function(num){
+        ChangeNum(num.call_num);
+      }	
+    });
+  });
+</script>
+</body>
+</html>

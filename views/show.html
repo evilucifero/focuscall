@@ -1,0 +1,136 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<title>焦点摄影欢迎你</title>
+<style>
+  body {
+    font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial, simsun, "宋体";
+    background: #000 url(/img/bg.png) repeat fixed top;
+    color: #fff;
+  }
+</style>
+<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="container">
+  <br>
+  <br>
+  <br>
+  <div class="text-center">
+    <img src="/img/logo.png" alt="焦点摄影" style="width:400px;">
+    <br>
+    <br>
+    <p id="nowNumber" style="font-size:140px;display:inline;color:#ff2222">000</p>
+    <p style="font-size:140px;display:inline">号同学</p>
+    <br>
+    <p style="font-size:80px">焦点喊你面试啦！</p>
+  </div>
+</div>
+<audio src="/sound/000.wav" id="s0"></audio>
+<audio src="/sound/001.wav" id="s1"></audio>
+<audio src="/sound/002.wav" id="s2"></audio>
+<audio src="/sound/003.wav" id="s3"></audio>
+<audio src="/sound/004.wav" id="s4"></audio>
+<audio src="/sound/005.wav" id="s5"></audio>
+<audio src="/sound/006.wav" id="s6"></audio>
+<audio src="/sound/007.wav" id="s7"></audio>
+<audio src="/sound/008.wav" id="s8"></audio>
+<audio src="/sound/009.wav" id="s9"></audio>
+<audio src="/sound/010.wav" id="s10"></audio>
+<audio src="/sound/020.wav" id="s20"></audio>
+<audio src="/sound/030.wav" id="s30"></audio>
+<audio src="/sound/040.wav" id="s40"></audio>
+<audio src="/sound/050.wav" id="s50"></audio>
+<audio src="/sound/060.wav" id="s60"></audio>
+<audio src="/sound/070.wav" id="s70"></audio>
+<audio src="/sound/080.wav" id="s80"></audio>
+<audio src="/sound/090.wav" id="s90"></audio>
+<audio src="/sound/100.wav" id="s100"></audio>
+<audio src="/sound/200.wav" id="s200"></audio>
+<audio src="/sound/basic.wav" id="sbasic"></audio>
+<script type="text/javascript">
+  window.onbeforeunload=function(event){
+    return "离开后所有的数据将全部丢失！";
+  }
+  var nownum = 0;
+  function SplitNum(numInput){
+    var bai = parseInt(numInput / 100);
+    var shi = parseInt(numInput % 100 / 10);
+    var ge  = parseInt(numInput % 10);
+    return [bai, shi, ge];
+  }
+  function PlaySound(strSound,numTimeline){
+      var playObject = document.getElementById("s"+strSound);
+      setTimeout(
+        function(){
+          playObject.play();
+        },
+        1000 * numTimeline
+      );
+      return numTimeline + playObject.duration;
+  }
+  function PlayList(num){
+    var playTimeline = 0;
+    var arrayNum = SplitNum(num);
+    if(arrayNum[0] >= 1 && arrayNum[0] <= 9){
+      playTimeline = PlaySound(""+(arrayNum[0]*100),playTimeline);
+      if(arrayNum[1] === 0 && arrayNum[2] !== 0){
+        playTimeline = PlaySound("0",playTimeline);
+      }
+    }
+    if(arrayNum[1] >= 1 && arrayNum[1] <= 9){
+      playTimeline = PlaySound(""+(arrayNum[1]*10),playTimeline);
+    }
+    if(arrayNum[2] >= 1 && arrayNum[2] <= 9){
+      playTimeline = PlaySound(""+(arrayNum[2]),playTimeline);
+    }
+    playTimeline = PlaySound("basic",playTimeline);
+  }
+  function ChangeNum(num){
+    var numstr = "";
+    if(num < 10){
+      numstr += "0";
+    } 
+    if(num < 100){
+      numstr += "0";
+    }
+    numstr += num.toString();
+    document.getElementById("nowNumber").textContent = numstr;
+  }
+  function CallUp(num){
+    PlayList(num);
+    ChangeNum(num);
+  }
+  function RequestCall(){
+    $.ajax({
+      type:"GET",
+      dataType:"json",
+      url:"/api/requestcall",
+      success:function(msg){
+        if(msg.call_num > nownum){
+          nownum++;
+          CallUp(nownum);
+        }
+      }
+    });
+  }
+  function InitialData(){
+    $.ajax({
+      type:"GET",
+      dataType:"json",
+      url:"/api/nowcall",
+      success:function(msg){
+        nownum = msg.call_num;
+        ChangeNum(nownum);
+      }
+    });
+  }
+  InitialData();
+  setInterval(RequestCall,8000);
+</script>
+</body>
+</html>
