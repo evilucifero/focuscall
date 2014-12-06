@@ -10,7 +10,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('.html',ejs.__express);  
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.favicon(path.join(__dirname,'/public/ico/favicon.ico')));
 app.get('/',function(req, res){
     res.render('show');
 });
