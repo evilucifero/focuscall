@@ -58,7 +58,7 @@
   window.onbeforeunload=function(event){
     return "离开后所有的数据将全部丢失！";
   }
-  var nownum = 0;
+  var nowNum = 0;
   function SplitNum(numInput){
     var bai = parseInt(numInput / 100);
     var shi = parseInt(numInput % 100 / 10);
@@ -113,9 +113,9 @@
       dataType:"json",
       url:"/api/requestcall",
       success:function(msg){
-        if(msg.call_num > nownum){
-          nownum++;
-          CallUp(nownum);
+        if(msg.callNum > nowNum){
+          nowNum++;
+          CallUp(nowNum);
         }
       }
     });
@@ -126,8 +126,8 @@
       dataType:"json",
       url:"/api/nowcall",
       success:function(msg){
-        nownum = msg.call_num;
-        ChangeNum(nownum);
+        nowNum = msg.callNum;
+        ChangeNum(nowNum);
       }
     });
   }

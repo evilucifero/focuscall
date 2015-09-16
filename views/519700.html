@@ -1,0 +1,101 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+<link rel="icon" href="/favicon.ico">
+<link rel="shortcut icon" href="/favicon.ico">
+<title>管理 - 焦点摄影</title>
+<style>
+    body {
+        font-family: "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", tahoma, arial, simsun, "宋体";
+    }
+</style>
+<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="text-center col-md-offset-3 col-md-6">
+  <br>
+  <h1><span class="glyphicon glyphicon-fire" style="color:#f33"></span>&nbsp;前方高能！</h1>
+  <h3>当前号码为：<span id="nowNumber">000</span></h3>
+  <br>
+  <p>【风险提示】</p>
+  <p>如果在面试中突然设置了一个很大的数字</p>
+  <p>那么傻傻就会一直不停可爱地叫下去</p>
+  <p>直到设置的那个数字</p>
+  <br>
+  <p>如果在面试中重新归零会立即暂停叫号</p>
+  <p>刷新大屏幕则叫号从头开始</p>
+  <br><br>
+  <input id="setInput" type="number" class="form-control">
+  <br>
+  <button id="setcall"  type="button" class="btn btn-warning btn-lg btn-block"><span class="glyphicon glyphicon-cog"></span>&ensp;设置号码</button>
+  <br><hr><br>
+  <button id="reset"  type="button" class="btn btn-danger btn-lg btn-block"><span class="glyphicon glyphicon-remove"></span>&ensp;重置归零</button>
+  <br>
+</div>
+</div>
+<script type="text/javascript">
+  var nowNum = 0;
+  function InitNum(num){
+    var numstr = "";
+    if(num < 10){
+      numstr += "0";
+    } 
+    if(num < 100){
+      numstr += "0";
+    }
+    numstr += num.toString();
+    document.getElementById("nowNumber").textContent = numstr;
+    document.getElementById("setInput").value = num;
+  }
+  function InitialData(){
+    $.ajax({
+      type:"GET",
+      dataType:"json",
+      url:"/api/nowcall",
+      success:function(msg){
+        InitNum(msg.callNum);
+      }
+    });
+  }
+  InitialData();
+
+  $("#setcall").click(function(){
+    var toNum = parseInt(document.getElementById("setInput").value);
+    if(confirm("你是要把当前号码改成 "+toNum+" 吗？")) {
+      if(confirm("确定、一定、以及肯定要修改叫号记录吗？")){
+        var name = prompt("请输入大名以继续，现在走还来得及");
+        $.ajax({
+          type:"GET",
+          dataType:"json",
+          url:"/api/setcall?nowNum="+toNum,
+          success:function(msg){
+            alert(name+" 已经成功将号码设置为"+msg.callNum);
+          } 
+        });
+      }
+    }
+  });
+
+  $("#reset").click(function(){
+    if(confirm("确定要清零叫号记录吗？")){
+      if(confirm("确定、一定、以及肯定要清零叫号记录吗？")){
+        var name = prompt("请输入大名以继续，现在走还来得及");
+        $.ajax({
+          type:"GET",
+          dataType:"json",
+          url:"/api/setcall?nowNum=0",
+          success:function(msg){
+            alert(name+" 已经负责任地把号码清零了");
+          } 
+        });
+      }
+    }
+  });
+</script>
+</body>
+</html>

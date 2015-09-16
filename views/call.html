@@ -26,11 +26,11 @@
 	<p id="nowNumber" style="display:inline;font-size:120px">000</p>
 	<br>
 	<br>
-	<button id="nextcall"  type="button" class="btn btn-danger btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span>&ensp;下一位</button>
-</div>
+	<button id="nextcall"  type="button" class="btn btn-info btn-lg btn-block"><span class="glyphicon glyphicon-arrow-right"></span>&ensp;下一位</button>
+  </div>
 </div>
 <script type="text/javascript">
-  var nownum = 0;
+  var nowNum = 0;
   function ChangeNum(num){
     var numstr = "";
     if(num < 10){
@@ -48,8 +48,7 @@
       dataType:"json",
       url:"/api/nowcall",
       success:function(msg){
-        nownum = msg.call_num;
-        ChangeNum(nownum);
+        ChangeNum(msg.callNum);
       }
     });
   }
@@ -59,8 +58,8 @@
       type:"GET",
       dataType:"json",
       url:"/api/nextcall",
-      success:function(num){
-        ChangeNum(num.call_num);
+      success:function(msg){
+        ChangeNum(msg.callNum);
       }	
     });
   });
